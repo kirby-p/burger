@@ -3,21 +3,21 @@ var connection = require('./connection.js');
 // object relational mapper (ORM)
 
 var orm = {
-    selectAll: function(tableInput) {
-        var queryString = 'SELECT * FROM ' + tableInput;
-        connection.query(queryString, function(err, result) {
+    selectAll: function(tableInput, colToSearch, valofCol) {
+        var queryString = 'SELECT * FROM ' + tableInput + ' WHERE ' + colToSearch + ' = ?';
+        connection.query(queryString, [valofCol], function(err, result) {
             console.log(result);
         });
     },
     insertOne: function(tableInput, newBurger){
-        var queryString = 'INSERT INTO ' + tableInput + ' SET ?', {burger_name: newBurger, devoured: 0};
-        connection.query(queryString, function(err, result) {
-            console.log(result);
+        var queryString = 'INSERT INTO ' + tableInput + ' SET ?';
+        connection.query(queryString, {burger_name: newBurger, devoured: 0}, function(err, result) {
+            console.log('insertOne result: ' + result);
         });    	
     },
     updateOne: function(tableInput, devoured_burger){
-        var queryString = 'UPDATE ' + tableInput + ' SET ? WHERE ?', [{devoured: 1}, {burger_name: devoured_burger}];
-        connection.query(queryString, function(err, result) {
+        var queryString = 'UPDATE ' + tableInput + ' SET ? WHERE ?';
+        connection.query(queryString, [{devoured: true}, {burger_name: devoured_burger}], function(err, result) {
             console.log(result);
         });    	    	
     }
